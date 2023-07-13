@@ -3,18 +3,29 @@ import * as Yup from "yup";
 // as Yup dediğim için Yup.object oldu. as demeseydim başına bir şey atamıyordum.
 
 let userKurallar = Yup.object({
-  name: Yup.string().required(),
+  name: Yup.string()
+    .required("isimsiz insan olmaz yalnız")
+    .length(4, "ismin en az 4 karakter olsun"),
 
-  email: Yup.string().email(),
+  email: Yup.string()
+    .required("bana e posta adresin lazım")
+    .email("düzgün gir şunu yanlış yazıyosun"),
 
   pass: Yup.string()
-    .required()
-    .min(6)
-    .matches(/[^0-9]/),
-  terms: Yup.boolean().required().oneOf([true]),
+    .required("şifresiz olmaz, bize kilit lazım")
+    .min(6, "bu kısa şifreyi hatırlarsın, bana unutacağın şifreler koy!")
+    .matches(
+      /[^0-9]/,
+      "bakıyorum da şifren hep sayı, yeterince karışık bulmadım. harf de koy!"
+    ),
+  terms: Yup.boolean().oneOf(
+    [true],
+    "zorunlu değilse bile gönüllü kabul etmelisin"
+  ),
 });
 // oneOf dediği şey çokluseçimden birini seçmesi
 // https://github.com/jquense/yup/blob/pre-v1/README.md dekine benzer yaklaşım uyguladım.
+// boolen da required geçersiz oluyor, uyarını true nun yanına yazıcaksın çünkü true değilse zaten false.
 
 const Form = () => {
   const ilkFormData = {
