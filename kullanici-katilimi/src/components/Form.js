@@ -1,4 +1,20 @@
 import React, { useState } from "react";
+import * as Yup from "yup";
+// as Yup dediğim için Yup.object oldu. as demeseydim başına bir şey atamıyordum.
+
+let userKurallar = Yup.object({
+  name: Yup.string().required(),
+
+  email: Yup.string().email(),
+
+  pass: Yup.string()
+    .required()
+    .min(6)
+    .matches(/[^0-9]/),
+  terms: Yup.boolean().required().oneOf([true]),
+});
+// oneOf dediği şey çokluseçimden birini seçmesi
+// https://github.com/jquense/yup/blob/pre-v1/README.md dekine benzer yaklaşım uyguladım.
 
 const Form = () => {
   const ilkFormData = {
