@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 // as Yup dediğim için Yup.object oldu. as demeseydim başına bir şey atamıyordum.
+import axios from "axios";
 
 let userKurallar = Yup.object({
   name: Yup.string()
@@ -41,6 +42,7 @@ const Form = () => {
 
   const [errors, setErrors] = useState({});
   const [isDisable, setisDisable] = useState(true);
+  const [sonuc, setSonuc] = useState([]);
 
   const changeHandler = (e) => {
     //console.log("change handler kontrolü", e.target.name);
@@ -90,7 +92,16 @@ const Form = () => {
     if (isDisable) {
       console.log("formda hatalar var!");
     } else {
-      console.log("formu gönderdim", formData);
+      axios
+        .post("http://reqres.in/api/users", formData)
+        .then((response) => {
+          console.log("formu gönderdim", response.data);
+          //console.log(response);
+          setSonuc([...sonuc, response.data]);
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     }
     //console.log("submit kontrolü", formData);
   };
