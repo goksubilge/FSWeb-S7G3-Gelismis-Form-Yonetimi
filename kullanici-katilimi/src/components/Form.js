@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const Form = () => {
   const ilkFormData = {
     name: "bilge",
-    email: "mail",
+    email: "@mail",
     pass: "goksu",
     terms: true,
   };
@@ -13,10 +13,14 @@ const Form = () => {
   const chanceHandler = (e) => {
     console.log("change handler kontrolü", e.target.name);
     // dynamic object key name.
-    let value = e.target.value;
+    // açıklamalı if yazımı:
+    /* let value = e.target.value;
     if (e.target.type === "checkbox") {
       value = e.target.checked;
-    }
+    } */
+    // single line if yazım:
+    let value =
+      e.target.type === "checkbox" ? e.target.checked : e.target.value;
 
     const newFormData = {
       ...formData,
@@ -26,7 +30,7 @@ const Form = () => {
   };
   // type'sı checkbox ise eğer direkt olarak e.target.value yu okumaz. o yüzden value tanımladım. type checkbox ise value yu e.target.checked e eşitle dedim. öyle düzeldi checkbox inputum.
   return (
-    <form>
+    <form onSubmit={submitHandler}>
       <div>
         <label htmlFor="name">Name-Surname</label>
         <input
@@ -63,6 +67,7 @@ const Form = () => {
           checked={formData.terms}
         />
       </div>
+      <button type="submit">SEND</button>
     </form>
   );
 };
