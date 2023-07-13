@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import * as Yup from "yup";
 // as Yup dediğim için Yup.object oldu. as demeseydim başına bir şey atamıyordum.
 
 let userKurallar = Yup.object({
   name: Yup.string()
     .required("isimsiz insan olmaz yalnız")
-    .length(4, "ismin en az 4 karakter olsun"),
+    .min(4, "ismin en az 4 karakter olsun"),
 
   email: Yup.string()
     .required("bana e posta adresin lazım")
@@ -29,9 +29,9 @@ let userKurallar = Yup.object({
 
 const Form = () => {
   const ilkFormData = {
-    name: "bilge",
-    email: "@mail",
-    pass: "goksu",
+    name: "",
+    email: "",
+    pass: "",
     terms: true,
   };
   const [formData, setFormData] = useState(ilkFormData);
@@ -59,14 +59,19 @@ const Form = () => {
       ...formData,
       [e.target.name]: value,
     };
+
     Yup.reach(userKurallar, e.target.name)
       .validate(value)
       .then((valid) => {
-        setisDisable(false);
         console.log("valid", valid);
+        //buraya da checkbox geçerliliği iin bunu ekledim. eğer box doluysa form gidebilecek. bütün hatalarımdan bir hata objesi oluşturucam.
+        const writeTotalErrs = {
+          ...errors,
+          [e.target.name]: null,
+        };
+        setErrors(writeTotalErrs);
       })
       .catch((err) => {
-        setisDisable(true);
         console.log("error verdi", err);
 
         const writeTotalErrs = {
@@ -79,8 +84,28 @@ const Form = () => {
     setFormData(newFormData);
   };
   // type'sı checkbox ise eğer direkt olarak e.target.value yu okumaz. o yüzden value tanımladım. type checkbox ise value yu e.target.checked e eşitle dedim. öyle düzeldi checkbox inputum.
+
+  const submitHandler = (e) => {
+    e.preventDefault();
+    if (isDisable) {
+      console.log("formda hatalar var!");
+    } else {
+      console.log("formu gönderdim", formData);
+    }
+    //console.log("submit kontrolü", formData);
+  };
+
+  useEffect(() => {
+    setisDisable(true);
+    // kuralların hepsi doğruysa
+    userKurallar.isValid(formData).then((valid) => {
+      console.log("valid", valid);
+      setisDisable(!valid);
+    });
+  }, [formData]);
+
   return (
-    <form /*onSubmit={submitHandler}*/>
+    <form onSubmit={submitHandler}>
       <div>
         <label htmlFor="name">Name-Surname</label>
         <input
