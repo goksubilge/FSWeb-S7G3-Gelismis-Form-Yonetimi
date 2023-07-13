@@ -12,7 +12,19 @@ const Form = () => {
 
   const chanceHandler = (e) => {
     console.log("change handler kontrolü", e.target.name);
+    // dynamic object key name.
+    let value = e.target.value;
+    if (e.target.type === "checkbox") {
+      value = e.target.checked;
+    }
+
+    const newFormData = {
+      ...formData,
+      [e.target.name]: value,
+    };
+    setFormData(newFormData);
   };
+  // type'sı checkbox ise eğer direkt olarak e.target.value yu okumaz. o yüzden value tanımladım. type checkbox ise value yu e.target.checked e eşitle dedim. öyle düzeldi checkbox inputum.
   return (
     <form>
       <div>
@@ -29,16 +41,16 @@ const Form = () => {
         <input
           onChange={chanceHandler}
           type="email"
-          name="name"
+          name="email"
           value={formData.email}
         />
       </div>
       <div>
-        <label htmlFor="terms">Key Pls</label>
+        <label htmlFor="pass">Key Pls</label>
         <input
           onChange={chanceHandler}
           type="password"
-          name="name"
+          name="pass"
           value={formData.pass}
         />
       </div>
@@ -47,7 +59,7 @@ const Form = () => {
         <input
           onChange={chanceHandler}
           type="checkbox"
-          name="name"
+          name="terms"
           checked={formData.terms}
         />
       </div>
