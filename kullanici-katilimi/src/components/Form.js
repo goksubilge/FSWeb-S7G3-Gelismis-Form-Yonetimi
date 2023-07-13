@@ -26,8 +26,9 @@ const Form = () => {
   const [formData, setFormData] = useState(ilkFormData);
   // şimdi yazıkça güncellenmesi için chanceHandler ekliyorum. inputlarda oluyor tabiki.
 
-  const chanceHandler = (e) => {
-    console.log("change handler kontrolü", e.target.name);
+  const changeHandler = (e) => {
+    //console.log("change handler kontrolü", e.target.name);
+    // console.log ("event", e);
     // dynamic object key name.
     // açıklamalı if yazımı:
     /* let value = e.target.value;
@@ -42,15 +43,24 @@ const Form = () => {
       ...formData,
       [e.target.name]: value,
     };
+    Yup.reach(userKurallar, e.target.name)
+      .validate(value)
+      .then((valid) => {
+        console.log("valid", valid);
+      })
+      .catch((err) => {
+        console.log("error", err);
+      });
+
     setFormData(newFormData);
   };
   // type'sı checkbox ise eğer direkt olarak e.target.value yu okumaz. o yüzden value tanımladım. type checkbox ise value yu e.target.checked e eşitle dedim. öyle düzeldi checkbox inputum.
   return (
-    <form onSubmit={submitHandler}>
+    <form /*onSubmit={submitHandler}*/>
       <div>
         <label htmlFor="name">Name-Surname</label>
         <input
-          onChange={chanceHandler}
+          onChange={changeHandler}
           type="text"
           name="name"
           value={formData.name}
@@ -59,7 +69,7 @@ const Form = () => {
       <div>
         <label htmlFor="email">E-Mail</label>
         <input
-          onChange={chanceHandler}
+          onChange={changeHandler}
           type="email"
           name="email"
           value={formData.email}
@@ -68,7 +78,7 @@ const Form = () => {
       <div>
         <label htmlFor="pass">Key Pls</label>
         <input
-          onChange={chanceHandler}
+          onChange={changeHandler}
           type="password"
           name="pass"
           value={formData.pass}
@@ -77,7 +87,7 @@ const Form = () => {
       <div>
         <label htmlFor="terms">Kullanım Şartları</label>
         <input
-          onChange={chanceHandler}
+          onChange={changeHandler}
           type="checkbox"
           name="terms"
           checked={formData.terms}
