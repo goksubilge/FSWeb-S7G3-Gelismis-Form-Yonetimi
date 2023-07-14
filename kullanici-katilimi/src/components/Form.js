@@ -33,7 +33,7 @@ const Form = () => {
     name: "",
     email: "",
     pass: "",
-    terms: true,
+    terms: false,
   };
   const [formData, setFormData] = useState(ilkFormData);
   // şimdi yazıkça güncellenmesi için chanceHandler ekliyorum. inputlarda oluyor tabiki.
@@ -93,7 +93,7 @@ const Form = () => {
       console.log("formda hatalar var!");
     } else {
       axios
-        .post("http://reqres.in/api/users", formData)
+        .post("https://reqres.in/api/users", formData)
         .then((response) => {
           console.log("formu gönderdim", response.data);
           //console.log(response);
@@ -159,7 +159,7 @@ const Form = () => {
           />
           {errors.terms && <p>{errors.terms}</p>}
         </div>
-        <button type="submit" disabled={!isDisable}>
+        <button type="submit" disabled={isDisable}>
           SEND
         </button>
       </form>
