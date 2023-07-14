@@ -114,53 +114,61 @@ const Form = () => {
       setisDisable(!valid);
     });
   }, [formData]);
+  // tek div olması gerekiyor mesela form divi. yeni bir div ekleyebilmek için fragment denilen <></> bunun içine alıyorum en en en dışa. sonra artık formun altına yeni div ekleyebilirim.
 
   return (
-    <form onSubmit={submitHandler}>
-      <div>
-        <label htmlFor="name">Name-Surname</label>
-        <input
-          onChange={changeHandler}
-          type="text"
-          name="name"
-          value={formData.name}
-        />
-        {errors.name && <p>{errors.name}</p>}
-      </div>
-      <div>
-        <label htmlFor="email">E-Mail</label>
-        <input
-          onChange={changeHandler}
-          type="email"
-          name="email"
-          value={formData.email}
-        />
-        {errors.email && <p>{errors.email}</p>}
-      </div>
-      <div>
-        <label htmlFor="pass">Key Pls</label>
-        <input
-          onChange={changeHandler}
-          type="password"
-          name="pass"
-          value={formData.pass}
-        />
-        {errors.pass && <p>{errors.pass}</p>}
-      </div>
-      <div>
-        <label htmlFor="terms">Kullanım Şartları</label>
-        <input
-          onChange={changeHandler}
-          type="checkbox"
-          name="terms"
-          checked={formData.terms}
-        />
-        {errors.terms && <p>{errors.terms}</p>}
-      </div>
-      <button type="submit" disabled={!isDisable}>
-        SEND
-      </button>
-    </form>
+    <>
+      <form onSubmit={submitHandler}>
+        <div>
+          <label htmlFor="name">Name-Surname</label>
+          <input
+            onChange={changeHandler}
+            type="text"
+            name="name"
+            value={formData.name}
+          />
+          {errors.name && <p>{errors.name}</p>}
+        </div>
+        <div>
+          <label htmlFor="email">E-Mail</label>
+          <input
+            onChange={changeHandler}
+            type="email"
+            name="email"
+            value={formData.email}
+          />
+          {errors.email && <p>{errors.email}</p>}
+        </div>
+        <div>
+          <label htmlFor="pass">Key Pls</label>
+          <input
+            onChange={changeHandler}
+            type="password"
+            name="pass"
+            value={formData.pass}
+          />
+          {errors.pass && <p>{errors.pass}</p>}
+        </div>
+        <div>
+          <label htmlFor="terms">Kullanım Şartları</label>
+          <input
+            onChange={changeHandler}
+            type="checkbox"
+            name="terms"
+            checked={formData.terms}
+          />
+          {errors.terms && <p>{errors.terms}</p>}
+        </div>
+        <button type="submit" disabled={!isDisable}>
+          SEND
+        </button>
+      </form>
+      <ul>
+        {sonuc.map((sonuc) => {
+          return <li key={sonuc.id}>{sonuc.name}</li>;
+        })}
+      </ul>
+    </>
   );
 };
 export default Form;
